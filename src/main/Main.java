@@ -12,7 +12,7 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
         Group group = new Group();
         Scene scene = new Scene(group, 500, 500);
-        stage.setTitle("Hello!");
+        stage.setTitle("Cellular Automata Rainfall");
         stage.setScene(scene);
         stage.show();
 
