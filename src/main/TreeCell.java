@@ -8,8 +8,8 @@ import java.util.Random;
 public class TreeCell extends Cell {
     private final Random rand;
     private final int WATER_MIN = 0, WATER_MAX = 10,
-            WATER_MATURE_MIN = 2, WATER_MATURE_MAX = 10,
-            WATER_SAPLING_MIN = 4, WATER_SAPLING_MAX = 8;
+            WATER_MATURE_MIN = 2, WATER_MATURE_MAX = 8,
+            WATER_SAPLING_MIN = 4, WATER_SAPLING_MAX = 6;
     private int water = WATER_MAX / 2;
     private boolean mature = true;
     TreeCell(int x, int y, double size) {
