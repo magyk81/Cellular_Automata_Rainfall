@@ -10,7 +10,9 @@ public class SimulationTimer extends AnimationTimer {
     }
     @Override
     public void handle(long l) {
-        cloudSimulation.handle(treeSimulation.feedback);
-        treeSimulation.handle(cloudSimulation.feedback);
+        boolean done = false;
+        if (cloudSimulation.handle(treeSimulation.feedback)) done = true;
+        if (treeSimulation.handle(cloudSimulation.feedback)) done = true;
+        if (done) stop();
     }
 }

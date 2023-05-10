@@ -8,10 +8,10 @@ import java.util.Random;
 public class TreeCell extends Cell {
     private final Random rand;
     private final int WATER_MIN = 0, WATER_MAX = 10,
-            WATER_MATURE_MIN = 2, WATER_MATURE_MAX = 8,
-            WATER_SAPLING_MIN = 4, WATER_SAPLING_MAX = 6;
+            WATER_MATURE_MIN = 2, WATER_MATURE_MAX = 10,
+            WATER_SAPLING_MIN = 4, WATER_SAPLING_MAX = 8;
     private int water = WATER_MAX / 2;
-    private boolean mature = true;
+    boolean mature = true;
     TreeCell(int x, int y, double size) {
         super(x, y, size);
 
@@ -32,18 +32,17 @@ public class TreeCell extends Cell {
         if (mature) {
             if (water < WATER_MATURE_MIN || water > WATER_MATURE_MAX) taoNew--;
             else taoNew++;
-        } else {
+        } else if (taoNew > 0) {
             if (water < WATER_SAPLING_MIN || water > WATER_SAPLING_MAX) taoNew--;
             else taoNew++;
-            if (taoNew == 0 && activeNeigbors >= 1) taoNew++;
-        }
+        } else if (activeNeigbors >= 3) taoNew++;
 
         if (mature) {
-            if (rand.nextFloat() < 0.25F) water--;
-        } else if (rand.nextFloat() < 0.5F) water--;
+            if (rand.nextFloat() < 0.1F) water--;
+        } else if (rand.nextFloat() < 0.2F) water--;
         if (water < WATER_MIN) water = WATER_MIN;
 
-        if (feedfront > 0) giveWater();
+        if (feedfront == 2) gotRain();
 
         if (mature) {
             if (feedfront == 0) return 2; // Sunny weather
@@ -73,14 +72,19 @@ public class TreeCell extends Cell {
             Color color = Color.color(0.9, 0.8, 0.5);
             context.setFill(color);
             context.fillRect(xDraw + canvasOffset, yDraw, size, size);
-            context.setFill(Color.color(0.2, 0.6, 0.2));
-            double ovalSize = tao / GRAYSCALE_TAO_MAX;
-            context.fillOval(xDraw + canvasOffset, yDraw, ovalSize, ovalSize);
+            context.setFill(Color.color(0.2, 0.6, 0.1));
+            double ovalSize = tao / GRAYSCALE_TAO_MAX * size;
+            context.fillRect(xDraw + canvasOffset - (ovalSize - size) / 2, yDraw - (ovalSize - size) / 2, ovalSize, ovalSize);
         }
     }
 
-    private void giveWater() {
+    private void gotRain() {
         water++;
         if (water > WATER_MAX) water = WATER_MAX;
+    }
+
+    public void clearCut() {
+        tao = taoNew = 0;
+        water = 0;
     }
 }
